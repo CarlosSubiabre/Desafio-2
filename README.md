@@ -2,8 +2,8 @@
 
 
 Se requiere de un programa en python que permita simular aleatoriamente el estado inicial de un cua-
-drante ecol ́ogico de 16 sub-cuadrantes, y en base a ello, se generen algunas estad ́ısticas y relaciones entre los
-elementos del cuadrante. El cuadrante deber ́a tener las siguientes caracter ́ısticas:
+drante ecológico de 16 sub-cuadrantes, y en base a ello, se generen algunas estad ́ısticas y relaciones entre los
+elementos del cuadrante. El cuadrante deberá tener las siguientes características:
 
 Cada sub-cuadrante podr ́a tener 3 estados posibles:
   •P →Planta
