@@ -1,0 +1,53 @@
+#No es posible colocar mas de n contenedores uno encima del otro
+#No hay  ́area para mas de m pilas de contenedores
+#Cada contenedor tiene formato Numero/NombreEmpresa
+#1 Generar estado inicial del puerto seco (Aqui se solicita n y m)
+#2 Imprimir estado del puerto seco
+#3 Ubicar un contenedor
+#4 Incluir un nuevo contenedor
+#5 Retirar un contenedor
+#6 Cerrar jornada laboral
+def menu():  #Creamos la función menú que llamaremos luego
+    print("Estado inicial : ")
+    print("Maximos contenedores en la pila : " , N )
+    print("Cantidad de pilas de contenedores : " , M )
+    print("\n¿Qué desea hacer?\n")
+    print("\n[1] Ubicar un contenedor.")
+    print("[2] Incluir un nuevo contenedor.")
+    print("[3] Retirar un contenedor.")
+    print("[4] Cerrar jornada laboral.")
+#----------------------------------------------------------------------#
+
+N = int(input("Maximos contenedores en la pila : ")) # Imput del usuario
+M = int(input("Cantidad de pilas de contenedores: "))
+
+contenedores = []
+for i in range(M):
+	cantidad = []
+	for j in range(N):
+		cantidad.append(input("Digite contenedores con formato Numero/NombreEmpresa: "))
+	contenedores.append(cantidad)
+
+print(contenedores)
+del contenedores[:]
+#-----------------------------------------------------------------------------------------------------#
+menu()
+
+opcion = int(input("\nIngrese su opcion: "))  # Llamamos la funcion menu
+
+while opcion != 4:
+    if opcion == 1:
+    # Ubicar contenedor
+        print("\nfunca1")
+    elif opcion == 2:
+    # Incluir nuevo contenedor
+        print("\nfunca2")
+    elif opcion == 3:
+    # Retirar un contenedor
+        print("\nfunca3")
+
+    print()
+    menu()
+    opcion = int(input("Ingrese su opcion: "))
+     
+print("\nSe ha cerrado la jornada")
