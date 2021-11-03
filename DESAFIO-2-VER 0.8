@@ -1,0 +1,103 @@
+#Controlar 25,26/TO-DO
+#No es posible colocar mas de n contenedores uno encima del otro
+#No hay  ́area para mas de m pilas de contenedores
+#Cada contenedor tiene formato Numero/NombreEmpresa
+#1 Generar estado inicial del puerto seco (Aqui se solicita n y m)
+#2 Imprimir estado del puerto seco
+#3 Ubicar un contenedor
+#4 Incluir un nuevo contenedor
+#5 Retirar un contenedor
+#6 Cerrar jornada laboral
+def llenarpuerto(N,M): 
+	puerto = []
+	if N==M or N<M: 
+		for i in range(M):
+			contenedores = []
+			for j in range(N):
+				contenedores.append(input("Ingrese numero/NombreEmpresa: "))
+			contenedores.append(0) 
+			puerto.append(contenedores)
+		
+	else: 
+		for i in range(M):
+			contenedores = []
+			for j in range(N):
+				if i == 0 and j == N-1:
+					contenedores.append(0)
+				else:
+					contenedores.append(input("Ingrese numero/NombreEmpresa: "))	
+			contenedores.append(0) 
+			puerto.append(contenedores)
+	return puerto
+
+def buscar(puerto, contenedor):
+	index = -1
+	i = 0
+	while(i<len(puerto)):
+		if puerto[i].count(contenedor) > 0:
+			index= puerto[i].index(contenedor)
+			pilak = i
+		i = i + 1
+	if index != -1:
+		return (pilak,index)
+	else:
+		return (None,None)
+
+def incluir(N, M, cantidad):
+	for v in range(cantidad):
+		if N < cantidad:
+			print("No es posible agregar mas contenedores a esta pila.")
+		else:
+			puerto.append(input("Ingrese el contenedor que agregara"))
+	return()
+
+def imprimepuerto(puerto,N,M):
+	i = N-1
+	while (i >= 0):
+		j = M-1
+		print("| ", end = " ")
+		while (j >= 0):
+			print (puerto[j][i], " | ", end=" ")
+			j = j - 1
+		print("")
+		i = i - 1
+
+def menu(N,M):  #Creamos la función menú que llamaremos luego
+    print("Estado inicial : ")
+    print("Maximos contenedores en la pila : " , N )
+    print("Cantidad de pilas de contenedores : " , M )
+    print("\n¿Qué desea hacer?\n")
+    print("\n[1] Ubicar un contenedor.")
+    print("[2] Incluir un nuevo contenedor.")
+    print("[3] Retirar un contenedor.")
+    print("[4] Cerrar jornada laboral.")
+#----------------------------------------------------------------------#
+N = int(input("Maximos contenedores en la pila : ")) # Imput del usuario
+M = int(input("Cantidad de pilas de contenedores: "))
+
+puerto = llenarpuerto(N,M)
+imprimepuerto(puerto, N+1, M)
+#-----------------------------------------------------------------------------------------------------#
+menu(N,M)
+opcion = int(input("\nIngrese su opcion: "))  # Llamamos la funcion menu
+
+while opcion != 4:  
+	if opcion == 1:# Ubicar contenedor
+		cont = input("Ingrese el contenedor que busca: ")
+		a,b = buscar(puerto, cont)
+		if a == None and b == None:
+			print("\nEl contenedor ingresado no existe en el puerto. ")
+		else:
+			print("El contenedor", puerto[a][b],"fue encontrado en la pila",a+1, "y posicion",b)
+	elif opcion == 2: # Incluir nuevo contenedor
+		cantidad = input("Ingrese la cantidad de contenedores que agregar: ")
+		agregar = incluir(N, M, cantidad)	
+		print(agregar)
+	elif opcion == 3:
+    # Retirar un contenedor
+		print("\nfunca3")           
+	print()
+	menu(N,M)
+	opcion = int(input("Ingrese su opcion: "))
+     
+print("\nSe ha cerrado la jornada")
