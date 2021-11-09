@@ -1,0 +1,184 @@
+#Controlar 25,26/TO-DO
+#No es posible colocar mas de n contenedores uno encima del otro
+#No hay  ́area para mas de m pilas de contenedores
+#Cada contenedor tiene formato Numero/NombreEmpresa
+#1 Generar estado inicial del puerto seco (Aqui se solicita n y m)
+#2 Imprimir estado del puerto seco
+#3 Ubicar un contenedor
+#4 Incluir un nuevo contenedor
+#5 Retirar un contenedor
+#6 Cerrar jornada laboral
+def espacio(puerto,N,M):
+	
+	i = 0
+	while (i < N-2):
+		j = M - 1
+		while (j > 0):
+			if(puerto[i][j]==0):
+				return i,j
+			j = j - 1
+		i = i + 1
+
+def retirarcontenedor(puerto,N,M,a,b):
+	
+	print(N,M,a,b)
+	
+	if (b+1==N):
+		print("Puedo retirar contenedor") # puerto[a][b] = 0
+		return puerto
+	elif capacidadpuerto(puerto,N,M)==0:
+		print("No puedo retirar contenedor")
+		return puerto
+	
+	if(puerto[a][b+1]==0):
+		print("Puedo retirar contenedor") # puerto[a][b] = 0
+		return puerto
+	else:
+		print("Debo hacer los cambios para retirar contenedor")
+		# sumar instrucciones para hacer los cambios
+		# mirar desde la primera fila y primera columna buscando espacios vacios (0)..while
+	return puerto
+
+def llenarpuerto(N,M):
+
+	puerto = [] 
+	
+	for i in range(M): # por cada pila pilas. M = 2. i = 0, i = 1
+		contenedores = [] # creamos una lista para contenedores
+		for j in range(N+1): # por cada espacio en la pila de contenedores. N = 2, j = 0, j = 1, j = 2
+			contenedores.append(0) # incorporamos un 0, que denota un espacio libre
+		puerto.append(contenedores) #[[pila1],[pila2]]
+	
+	# definir cantidad de espacios disponibles
+	if N==M or N<M: 
+		vacios = N 
+	else:
+		vacios = N + M - 1
+	
+	# Estado inicial en un % que indique el usuario 
+		
+	inicio = int(input("Ingrese % de del estado inicial del puerto (1: lleno, 2: 50%, 3: vacío): "))
+	disponible = (N+1)*(M) - vacios # la capacidad  maxima del puerto, dependiendo de N y M
+	
+	if inicio == 3: # Si el usuario indica que necesita el puerto vacio, entonces retornamos el puerto.
+		return puerto # Desde la linea 48 a la linea 52, se crea el puerto completo con espacios, por lo tanto esta vacio.
+	elif inicio == 2:
+		disponible = disponible / 2
+	
+	###################### Llenamos el puerto según condiciones
+	
+	
+	i = 0
+	while(i<M): # Por cada i que corresponde a un índice de una pila (M = pilas)
+		j = 0
+		while(j<N): # Por cada contenedor o elmento en la pila 
+			if disponible > 0: # Si, nos queda capacidad real
+				puerto[i][j] = input("Ingrese numero/NombreEmpresa: ")
+				disponible = disponible - 1
+			j = j + 1
+		i = i + 1
+	return puerto
+	
+
+def buscar(puerto, contenedor):
+	index = -1
+	i = 0
+	while(i<len(puerto)):
+		if puerto[i].count(contenedor) > 0:
+			index= puerto[i].index(contenedor)
+			pilak = i
+		i = i + 1
+	if index != -1:
+		return (pilak,index)
+	else:
+		return (None,None)
+
+def capacidadpuerto(puerto,N,M):
+	if N==M or N<M: 
+		vacios = N 
+	else:
+		vacios = N + M - 1
+	
+	capacidad = (N+1)*(M) - vacios
+	
+	for pilas in puerto:
+		for contenedor in pilas:
+			if contenedor != 0:
+				capacidad = capacidad - 1
+	
+	return capacidad
+
+def nuevocontenedor(puerto,N,M):
+	
+	if capacidadpuerto(puerto,N,M) == 0:
+		print("El puerto está lleno. No podemos recibir su contenedor ")
+	else:
+		i = 0
+		while(i<M):
+			j = 0
+			while(j<N):
+				if puerto[i][j] == 0: # Si es un espacio vacio
+					puerto[i][j] = input("Ingrese numero/NombreEmpresa: ")
+					imprimepuerto(puerto, N,M)
+					return puerto
+				j = j + 1
+			i = i + 1
+	return puerto	
+
+def imprimepuerto(puerto,N,M):
+	i = N-1
+	while (i >= 0):
+		j = M-1
+		print("| ", end = " ")
+		while (j >= 0):
+			print (puerto[j][i], " | ", end=" ")
+			j = j - 1
+		print("")
+		i = i - 1
+
+def menu():  #Creamos la función menú que llamaremos luego
+    print("\n¿Qué desea hacer?\n")
+    print("\n[1] Generar estado inicial del puerto.")
+    print("[2] Imprimir estado del puerto")
+    print("[3] Buscar un contenedor)")
+    print("[4] Incluir un nuevo contenedor.")
+    print("[5] Retirar un contenedor.")
+    print("[6] Cerrar jornada laboral.")
+#----------------------------------------------------------------------#
+puerto = []
+menu()
+op = int(input("\nIngrese su opción: "))
+
+while (op != 6):
+	
+	if op == 1:
+		N = int(input("\n\nIngrese N: ")) # N+1
+		M = int(input("Ingrese M: "))
+		puerto = llenarpuerto(N,M)
+	elif op == 2:
+		imprimepuerto(puerto,N,M)
+	elif op == 3:
+		contenedor = input("\n\n\nIngrese nombre del contenedor a buscar: \n")
+		a,b = buscar(puerto, contenedor)
+		if (a == -1 and b == -1):
+			imprimepuerto(puerto, N,M)
+			print("Contenedor no se encuentra en el puerto")
+		else:
+			imprimepuerto(puerto, N,M)
+			print("\nEl contenedor buscado ",contenedor,", se encuentra en la pila ", M-a," en el nivel ",b+1)
+	elif op == 4:
+		puerto = nuevocontenedor(puerto,N,M)
+	elif op == 5:
+		contenedor = input("\n\n\nIngrese nombre del contenedor a retirar: \n")
+		a,b = buscar(puerto, contenedor)
+		if (a == -1 and b == -1):
+			print("Contenedor no se encuentra en el puerto")
+		else:
+			imprimepuerto(puerto, N,M)
+			print("\nEl contenedor buscado ",contenedor,", se encuentra en la pila ", M-a," en el nivel ",b+1)
+			puerto =retirarcontenedor(puerto,N,M,a,b)
+	menu()
+	op = int(input("\nIngrese opción: "))	
+		
+print("\n\nFin jornada laboral")
+
