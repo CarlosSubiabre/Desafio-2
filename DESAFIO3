@@ -1,0 +1,115 @@
+def menu():
+	print("Seleccione una de las siguientes opciones.")
+	print("[1] Mostrar cantidad de personas Covid, pacientes UCI y examenes PCR")
+	print("[2] Comparar con el mismo dia del año anterior")
+	print("[3] Mostrar la tasa de positividad en un dia determinado")
+
+def examenesCovid(lineas):
+	
+	region = []
+	fechas = lineas[0].split(',')
+	i = 1
+	while (i < len(lineas)):
+		lineanueva = lineas[i].split(',') 
+		j = 3
+		examenesCovid = {}
+		while(j < len(lineanueva)):
+			examenesCovid[fechas[j]]=lineanueva[j]
+			j = j + 1
+		region.append(examenesCovid)
+		i = i + 1
+	
+	return region
+leer  = open("Examenes-PCR-region.txt")
+
+leido = leer.readlines()
+examenes = examenesCovid(leido)
+leer.close()
+#------------------------------------------------------------#
+def pacientesCovid(lineas):
+	
+	region = []
+	fechas = lineas[0].split(',')
+	i = 1
+	while (i < len(lineas)):
+		lineanueva = lineas[i].split(',') 
+		j = 3 
+		pacientesCovid = {}
+		while(j	 < len(lineanueva)):
+			pacientesCovid[fechas[j]]=lineanueva[j]
+			j = j + 1
+		region.append(pacientesCovid)
+		i = i + 1
+	
+	return region
+leer  = open("Pacientes-UCI-region.txt")
+
+leido = leer.readlines()
+pacientes = pacientesCovid(leido)
+leer.close()
+#------------------------------------------------------------#
+def camposCovid(lineas):
+	
+	region = []
+	fechas = lineas[0].split(',')
+	i = 1
+	while (i < len(lineas)):
+		lineanueva = lineas[i].split(',') 
+		j = 1 
+		personasCovid = {}
+		while(j < len(lineanueva)):
+			personasCovid[fechas[j]]=lineanueva[j]
+			j = j + 1
+		region.append(personasCovid)
+		i = i + 1
+	
+	return region
+leer  = open("Casos-nuevos-totales-por-region.txt")
+
+leido = leer.readlines()
+personasCovid = camposCovid(leido)
+leer.close()
+
+menu()
+op = int(input("Ingrese opción: "))
+
+while (op != 4):
+	if op == 1:
+		pos = int(input("Ingrese la región: "))
+		fecha = input("Ingrese la fecha: ")
+		print("Cantidad de casos Covid: ", personasCovid[pos][fecha])
+		print("Cantidad de pacientes en UCI:", pacientes[pos][fecha])
+		print("Cantidad de examenes PCR realizados: ", examenes[pos][fecha])
+	elif op == 2:
+		
+		pos = int(input("Ingrese la región: "))
+		fecha = input("Ingrese la fecha: ")
+		comp = input("Ingrese la fecha a comparar: ")
+		
+		if fecha > comp and comp in personasCovid and comp in comp in pacientes and comp in examenes:
+			print("La cantidad de casos el dia ", fecha, "fue de: ", personasCovid[pos][fecha])
+			print("La cantidad de casos el dia ", comp, "fue de: ", personasCovid[pos][comp])
+			print("La cantidad de examenes el dia ", fecha, "fue de: ", examenes[pos][fecha])
+			print("La cantidad de examenes el dia ", comp, "fue de: ", examenes[pos][comp])
+			print("La cantidad de pacientes en UCI el dia ", fecha, "fue de: ", pacientes[pos][fecha])
+			print("La cantidad de pacientes en UCI el dia ", comp, "fue de: ", pacientes[pos][comp])
+		elif comp not in personasCovid and comp not in examenes and comp not in pacientes:
+			print("La fecha indicada no existe, intentelo de nuevo.")
+		elif fecha < comp:
+			print("Las fechas no coindicen, intentelo de nuevo")
+	elif op == 3:
+		fecha = input("Ingrese fecha: ")
+		pers = 0
+		examen = 0
+		for i in range (1,16):
+			pers = pers + int(personasCovid[i][fecha])
+			print("Los pacientes positivos son: ", pers)
+		for i in range (1,16):
+			examen = examen + int(examenes[i][fecha])
+		print("Los examenes PCR son: ", examen)
+		porcentaje = (pers/examen)*100
+		print("El porcentaje de positividad es de un", round(porcentaje),"%")
+		
+	menu()
+	op = int(input("Ingrese opción: "))
+print("El menu ha finalizado")
